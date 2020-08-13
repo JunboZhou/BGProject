@@ -6,6 +6,12 @@ spring:
     url: jdbc:mysql://localhost:3306/tensquare_article?characterEncoding=utf-8
     username: root
     password: 523252
+  data:
+     mongodb:
+       host: 127.0.0.1
+       database: commentdb
+#       redis:
+#         host: 127.0.0.1
 # Mybatis-Plus 配置
 mybatis-plus:
 #  mapper-locations: classpath:/mapper/*Mapper.xml
@@ -21,3 +27,10 @@ mybatis-plus:
       lazyLoadingEnabled: true #延时加载的开关
       multipleResultSetsEnabled: true #开启延时加载，否则按需加载属性
       log-impl: org.apache.ibatis.logging.stdout.StdOutImpl #打印sql语句,调试用
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://10.8.160.13:6868/eureka/
+  instance:
+    prefer-ip-address: true

@@ -10,4 +10,4 @@ eureka:
     #是否从Eureka中获取信息，这里也不需要
     fetch-registry: false
     service-url:
-      defaultZone: http://10.8.160.13:/${server.port}/eureka/
+      defaultZone: http://10.8.160.20:/${server.port}/eureka/

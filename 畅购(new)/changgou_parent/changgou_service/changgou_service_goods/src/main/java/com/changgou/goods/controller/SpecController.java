@@ -88,7 +88,6 @@ public class SpecController {
         return new Result(true,StatusCode.OK,"查询成功",list);
     }
 
-
     /***
      * 分页搜索实现
      * @param searchMap
@@ -103,5 +102,9 @@ public class SpecController {
         return new Result(true,StatusCode.OK,"查询成功",pageResult);
     }
 
-
+    @GetMapping("/category/{categoryName}")
+    public List<Map> findListByCategoryName(@PathVariable String categoryName) {
+        List<Map> specList = specService.findListByCategoryName(categoryName);
+        return specList;
+    }
 }

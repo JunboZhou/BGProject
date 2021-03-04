@@ -64,6 +64,6 @@ public interface SpecService {
     Page<Spec> findPage(Map<String, Object> searchMap, int page, int size);
 
 
-
+    public List<Map> findListByCategoryName(String category);
 
 }

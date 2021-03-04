@@ -104,6 +104,12 @@ public class SpecServiceImpl implements SpecService {
         return (Page<Spec>)specMapper.selectByExample(example);
     }
 
+    @Override
+    public List<Map> findListByCategoryName(String category) {
+        List<Map> specLsit = specMapper.findBrandListByCategoryName(category);
+        return specLsit;
+    }
+
     /**
      * 构建查询对象
      * @param searchMap

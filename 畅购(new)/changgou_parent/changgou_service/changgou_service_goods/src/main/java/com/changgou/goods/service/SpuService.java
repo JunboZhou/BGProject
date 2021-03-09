@@ -64,7 +64,22 @@ public interface SpuService {
      */
     Page<Spu> findPage(Map<String, Object> searchMap, int page, int size);
 
+    /**
+     * 审核
+     * @param id
+     */
+    public void audit(String id);
 
+    //商品下架
+    void pull(String id);
 
+    //商品上架
+    void put(String id);
+
+    //还原商品
+    void restore(String id);
+
+    //物理删除商品
+    void realDel(String id);
 
 }

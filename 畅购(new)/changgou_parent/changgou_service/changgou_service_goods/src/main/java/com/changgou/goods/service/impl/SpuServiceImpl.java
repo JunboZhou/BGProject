@@ -10,6 +10,7 @@ import com.github.pagehelper.PageHelper;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.Date;
@@ -296,6 +297,91 @@ public class SpuServiceImpl implements SpuService {
 
         }
         return example;
+    }
+
+    /**
+     * 审核
+     * @param id
+     */
+    @Override
+    @Transactional
+    public void audit(String id) {
+        // 查询spu对象
+        Spu spu = spuMapper.selectByPrimaryKey(id);
+        if (spu == null) {
+            throw new RuntimeException("当前商品不存在");
+        }
+        // 不处于删除状态,修改审核状态为1,上下架状态为1
+        spu.setStatus("1");
+        spu.setIsMarketable("1");
+        spuMapper.updateByPrimaryKeySelective(spu);
+    }
+
+    // 下架
+    @Override
+    @Transactional
+    public void pull(String id) {
+        // 查询spu
+        Spu spu = spuMapper.selectByPrimaryKey(id);
+        if (spu == null) {
+            throw new RuntimeException("当前商品不存在");
+        }
+        // 判断当前商品是否处于删除状态
+        if ("1".equals(spu.getIsDelete())) {
+            throw new RuntimeException("商品处于删除状态");
+        }
+        // 商品处于未删除状态的话.则修改上下架状态为 0
+        spu.setIsMarketable("0");
+        spuMapper.updateByPrimaryKeySelective(spu);
+    }
+
+    // 上架
+    @Override
+    @Transactional
+    public void put(String id) {
+        // 查询spu
+        Spu spu = spuMapper.selectByPrimaryKey(id);
+        if (spu == null) {
+            throw new RuntimeException("当前商品不存在");
+        }
+        // 商品审核状态必须已审核 1
+        if (!spu.getStatus().equals("1")) {
+            throw new RuntimeException("当前商品未审核");
+        }
+        spu.setIsMarketable("1");
+        spuMapper.updateByPrimaryKeySelective(spu);
+    }
+
+    // 还原
+    @Override
+    @Transactional
+    public void restore(String id) {
+        // 查询spu
+        Spu spu = spuMapper.selectByPrimaryKey(id);
+        if (spu == null) {
+            throw new RuntimeException("当前商品不存在");
+        }
+        // 修改属性字段
+        spu.setIsDelete("0");
+        spu.setStatus("0");
+        spuMapper.updateByPrimaryKeySelective(spu);
+    }
+
+    // 物理删除商品
+    @Override
+    @Transactional
+    public void realDel(String id) {
+        // 查询spu
+        Spu spu = spuMapper.selectByPrimaryKey(id);
+        if (spu == null) {
+            throw new RuntimeException("当前商品不存在");
+        }
+        // 判断当前商品已处于删除状态
+        if (!"1".equals(spu.getIsDelete())) {
+            throw new RuntimeException("当前商品处于未删除状态");
+        }
+        spuMapper.deleteByPrimaryKey(spu);
+
     }
 
 }
